@@ -8,7 +8,6 @@ import sda.projects.travelagencybackend.model.Trip;
 import sda.projects.travelagencybackend.repository.TripRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/trips")
