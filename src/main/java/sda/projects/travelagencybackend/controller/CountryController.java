@@ -28,14 +28,14 @@ public class CountryController {
    @PostMapping
    public void createCountry(@RequestBody final Country country) {
       Optional<Country> c = countryRepository.findByName(country.getName());
-      if (c.isPresent()) throw new ControllerException("Country already exists");
+      if (c.isPresent()) throw new ControllerConflictException("Country already exists");
       country.setId(null);
       countryRepository.save(country);
    }
 
    @ResponseStatus(HttpStatus.CONFLICT)
-   @ExceptionHandler(ControllerException.class)
-   public ControllerError handleSpecificSdaException(final ControllerException exception) {
+   @ExceptionHandler(ControllerConflictException.class)
+   public ControllerError handleSpecificControllerException(final ControllerConflictException exception) {
       return new ControllerError(exception.getMessage());
    }
 }

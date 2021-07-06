@@ -1,9 +1,8 @@
 package sda.projects.travelagencybackend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import sda.projects.travelagencybackend.model.Continent;
 import sda.projects.travelagencybackend.repository.ContinentRepository;
 
@@ -22,5 +21,16 @@ public class ContinentController {
    @GetMapping
    public List<Continent> getAllContinents() {
       return continentRepository.findAll();
+   }
+
+   @GetMapping("/{id}")
+   public Continent getContinentById(@PathVariable(name="id") final Long id) {
+      return continentRepository.findById(id).orElseThrow(() -> new ControllerNotFoundException("Continent not found"));
+   }
+
+   @ResponseStatus(HttpStatus.NOT_FOUND)
+   @ExceptionHandler(ControllerNotFoundException.class)
+   public ControllerError handleSpecificControllerException(final ControllerNotFoundException exception) {
+      return new ControllerError(exception.getMessage());
    }
 }

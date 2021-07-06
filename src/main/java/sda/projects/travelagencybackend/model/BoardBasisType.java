@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class BoardBasisTypes {
+public class BoardBasisType {
    @Id
    @GeneratedValue
    private Long id;
