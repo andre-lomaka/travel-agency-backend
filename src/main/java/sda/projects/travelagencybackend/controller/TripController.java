@@ -1,10 +1,7 @@
 package sda.projects.travelagencybackend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sda.projects.travelagencybackend.model.Trip;
 import sda.projects.travelagencybackend.repository.TripRepository;
 
@@ -21,23 +18,27 @@ public class TripController {
       this.tripRepository = tripRepository;
    }
 
-   @GetMapping
-   public List<Trip> getAllTrips() {
-      return tripRepository.findAllByDepartureDateGreaterThan(LocalDate.now());
-   }
-
    @GetMapping("/promoted")
    public List<Trip> getPromotedTrips() {
       return tripRepository.findAllByPromotedAndDepartureDateGreaterThan(true, LocalDate.now());
    }
 
-   @GetMapping("/continent/{id}")
-   public List<Trip> getTripsByContinent(@PathVariable(name="id") final Long id) {
-      return tripRepository.findAllByContinent(id, LocalDate.now());
-   }
-
-   @GetMapping("/country/{id}")
-   public List<Trip> getTripsByCountry(@PathVariable(name="id") final Long id) {
-      return tripRepository.findAllByCountry(id, LocalDate.now());
+   @GetMapping
+   public List<Trip> getAllTrips(@RequestParam(name="continent", required = false) final Long continentId,
+                                 @RequestParam(name="country", required = false) final Long countryId,
+                                 @RequestParam(name="fromCity", required = false) final Long fromCityId,
+                                 @RequestParam(name="toCity", required = false) final Long toCityId,
+                                 @RequestParam(name="bbt", required = false) final Long bbtId) {
+      if (continentId != null)
+         return tripRepository.findAllByContinent(continentId, LocalDate.now());
+      else if (countryId != null)
+         return tripRepository.findAllByCountry(countryId, LocalDate.now());
+      else if (fromCityId != null)
+         return tripRepository.findAllByFromCity(fromCityId, LocalDate.now());
+      else if (toCityId != null)
+         return tripRepository.findAllByToCity(toCityId, LocalDate.now());
+      else if (bbtId != null)
+         return tripRepository.findAllByBbt(bbtId, LocalDate.now());
+      return tripRepository.findAllByDepartureDateGreaterThan(LocalDate.now());
    }
 }
