@@ -8,6 +8,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,10 @@ public class TripRepositoryImpl {
                break;
             case "toHotel":
                predicates.add(cb.equal(root.get(field).get("numberOfStars"), (Integer) value));
+               break;
+            case "departureDate":
+            case "returnDate":
+               predicates.add(cb.equal(root.get(field), (LocalDate) value));
                break;
          }
       });
