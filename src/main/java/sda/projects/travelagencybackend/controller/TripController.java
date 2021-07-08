@@ -40,6 +40,7 @@ public class TripController {
                                  @RequestParam(name="toCity", required = false) final Long toCityId,
                                  @RequestParam(name="bbt", required = false) final Long bbtId,
                                  @RequestParam(name="hotelStars", required = false) final Integer numberOfStars,
+                                 @RequestParam(name="vacancies", required = false) final Integer vacancies,
                                  @RequestParam(name="departureDate", required = false) @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) final LocalDate departureDate,
                                  @RequestParam(name="returnDate", required = false) @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) final LocalDate returnDate) {
       HashMap<String, Object> data = new HashMap<>();
@@ -51,6 +52,8 @@ public class TripController {
          data.put("boardBasisType", bbtId);
       if (numberOfStars != null)
          data.put("toHotel", numberOfStars);
+      if (vacancies != null)
+         data.put("vacancies", vacancies);
       if (departureDate != null)
          data.put("departureDate", departureDate);
       if (returnDate != null)

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -24,6 +25,9 @@ public class Purchase {
 
    @Column(nullable=false)
    private BigDecimal price;
+
+   @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+   private LocalDateTime createdAt;
 
    @ManyToOne
    @JoinColumn

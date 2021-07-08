@@ -37,6 +37,9 @@ public class TripRepositoryImpl {
             case "returnDate":
                predicates.add(cb.equal(root.get(field), (LocalDate) value));
                break;
+            case "vacancies":
+               predicates.add(cb.equal(root.get(field), (Integer) value));
+               break;
          }
       });
       predicates.add(cb.greaterThan(root.get("departureDate"), cb.currentDate()));
