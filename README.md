@@ -3,6 +3,7 @@
 ## Endpoints
 
 * List all trips: `GET /api/trips`
+* Get trip by id: `GET /api/trips/{id}`
 * List promoted trips: `GET /api/trips/promoted`
 * List trips by continent id: `GET /api/trips?continent=[id]`
 * List trips by country id: `GET /api/trips?country=[id]`
@@ -13,6 +14,7 @@
   * `hotelStars`: hotel standard
   * `departureDate`: departure date (yyyy-mm-dd)
   * `returnDate`: return date (yyyy-mm-dd)
+* Create trip: `POST /api/trips`
 * List all continents: `GET /api/continents`
 * Get continent by id: `GET /api/continents/{id}`
 * List all cities: `GET /api/cities`

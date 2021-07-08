@@ -2,10 +2,13 @@ package sda.projects.travelagencybackend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sda.projects.travelagencybackend.model.Trip;
 import sda.projects.travelagencybackend.repository.TripRepository;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +26,11 @@ public class TripController {
    @GetMapping("/promoted")
    public List<Trip> getPromotedTrips() {
       return tripRepository.findAllByPromotedAndDepartureDateGreaterThan(true, LocalDate.now());
+   }
+
+   @GetMapping("/{id}")
+   public Trip getTripById(@PathVariable(name="id") final Long id) {
+      return tripRepository.findById(id).orElseThrow(() -> new ControllerNotFoundException("Trip not found"));
    }
 
    @GetMapping
@@ -53,5 +61,18 @@ public class TripController {
       else if (countryId != null)
          return tripRepository.findAllByCountry(countryId, LocalDate.now());
       return tripRepository.findAllByDepartureDateGreaterThan(LocalDate.now());
+   }
+
+   @PostMapping
+   public ResponseEntity<Trip> createTrip(@RequestBody final Trip trip) {
+      trip.setId(null);
+      Trip t = tripRepository.save(trip);
+      return ResponseEntity.created(URI.create(String.format("/api/trips/%s", t.getId()))).body(t);
+   }
+
+   @ResponseStatus(HttpStatus.NOT_FOUND)
+   @ExceptionHandler(ControllerNotFoundException.class)
+   public ControllerError handleSpecificControllerException(final ControllerNotFoundException exception) {
+      return new ControllerError(exception.getMessage());
    }
 }
