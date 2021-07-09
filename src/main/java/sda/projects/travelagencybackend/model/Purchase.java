@@ -26,7 +26,7 @@ public class Purchase {
    @Column(nullable=false)
    private BigDecimal price;
 
-   @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+   @Column(nullable=false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
    private LocalDateTime createdAt;
 
    @ManyToOne

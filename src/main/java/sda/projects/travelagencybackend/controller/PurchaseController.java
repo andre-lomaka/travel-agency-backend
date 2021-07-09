@@ -11,6 +11,7 @@ import sda.projects.travelagencybackend.repository.TripRepository;
 
 import java.math.BigDecimal;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -30,6 +31,11 @@ public class PurchaseController {
       return purchaseRepository.findAll();
    }
 
+   @GetMapping("/trips")
+   public List<Trip> getPurchasedTrips() {
+      return purchaseRepository.findTrips();
+   }
+
    @PostMapping
    public ResponseEntity<Purchase> createPurchase(@RequestBody final Purchase purchase) {
       Trip trip = tripRepository.findById(purchase.getTrip().getId()).orElseThrow(() -> new ControllerNotFoundException("Trip not found"));
@@ -38,6 +44,7 @@ public class PurchaseController {
       trip.setVacancies(trip.getVacancies()-1);
       tripRepository.save(trip);
       purchase.setId(null);
+      purchase.setCreatedAt(LocalDateTime.now());
       purchase.setTrip(trip);
       purchase.setPrice(trip.getAdultPrice().multiply(BigDecimal.valueOf(purchase.getNumberOfAdults())).
               add(trip.getChildPrice().multiply(BigDecimal.valueOf(purchase.getNumberOfChildren()))));
@@ -53,7 +60,6 @@ public class PurchaseController {
       p.setNumberOfAdults(purchase.getNumberOfAdults());
       p.setNumberOfChildren(purchase.getNumberOfChildren());
       if (!validatePersons(p, trip)) throw new ControllerConflictException("Invalid number of persons");
-      p.setId(id);
       p.setPrice(trip.getAdultPrice().multiply(BigDecimal.valueOf(purchase.getNumberOfAdults())).
               add(trip.getChildPrice().multiply(BigDecimal.valueOf(purchase.getNumberOfChildren()))));
       purchaseRepository.save(p);
@@ -70,7 +76,7 @@ public class PurchaseController {
       try {
          purchaseRepository.deleteById(id);
       } catch (Exception e) {
-         throw new ControllerConflictException("Something bad happened");
+         throw new ControllerConflictException(e.getMessage());
       }
    }
 

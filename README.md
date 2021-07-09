@@ -25,6 +25,7 @@
 * Create country: `POST /api/countries`
 * List all purchases: `GET /api/purchases`
 * Get purchase by id: `GET /api/purchases/{id}`
+* List purchased trips: `GET /api/purchases/trips`
 * Create purchase: `POST /api/purchases`
 * Update purchase at a given id: `PUT /api/purchases/{id}`
 * Delete purchase at a given id: `DELETE /api/purchases/{id}`

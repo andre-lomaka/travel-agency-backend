@@ -57,4 +57,5 @@ VALUES(1, 1, 2, 3, 1, '2021-07-20', '2021-07-21', 1, 3.0, 1.5, false, 1, 1, 5),
 
 INSERT INTO purchase(number_of_adults, number_of_children, price, trip_id)
 VALUES(1, 0, 2.45, 1),
-      (2, 1, 3.95, 3);
+      (2, 1, 3.95, 3),
+      (1, 1, 9.99, 1);
