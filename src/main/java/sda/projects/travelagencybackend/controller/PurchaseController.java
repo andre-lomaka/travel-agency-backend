@@ -32,7 +32,7 @@ public class PurchaseController {
 
    @PostMapping
    public ResponseEntity<Purchase> createPurchase(@RequestBody final Purchase purchase) {
-      Trip trip = tripRepository.getById(purchase.getTrip().getId());
+      Trip trip = tripRepository.findById(purchase.getTrip().getId()).orElseThrow(() -> new ControllerNotFoundException("Trip not found"));
       if (!validatePersons(purchase, trip)) throw new ControllerConflictException("Invalid number of persons");
       if (!validateAvailability(trip)) throw new ControllerConflictException("Trip not available");
       trip.setVacancies(trip.getVacancies()-1);
@@ -45,9 +45,33 @@ public class PurchaseController {
       return ResponseEntity.created(URI.create(String.format("/api/purchases/%s", p.getId()))).body(p);
    }
 
+   @PutMapping("/{id}")
+   public ResponseEntity<Purchase> updatePurchase(@RequestBody final Purchase purchase, @PathVariable(name="id") final Long id) {
+      Purchase p = purchaseRepository.findById(id).orElseThrow(() -> new ControllerNotFoundException("Purchase not found"));
+      if (!p.getTrip().getId().equals(purchase.getTrip().getId())) throw new ControllerConflictException("Trip cannot be changed");
+      Trip trip = tripRepository.findById(purchase.getTrip().getId()).get();
+      p.setNumberOfAdults(purchase.getNumberOfAdults());
+      p.setNumberOfChildren(purchase.getNumberOfChildren());
+      if (!validatePersons(p, trip)) throw new ControllerConflictException("Invalid number of persons");
+      p.setId(id);
+      p.setPrice(trip.getAdultPrice().multiply(BigDecimal.valueOf(purchase.getNumberOfAdults())).
+              add(trip.getChildPrice().multiply(BigDecimal.valueOf(purchase.getNumberOfChildren()))));
+      purchaseRepository.save(p);
+      return ResponseEntity.noContent().build();
+   }
+
    @GetMapping("/{id}")
    public Purchase getPurchaseById(@PathVariable(name="id") final Long id) {
       return purchaseRepository.findById(id).orElseThrow(() -> new ControllerNotFoundException("Purchase not found"));
+   }
+
+   @DeleteMapping("/{id}")
+   public void deletePurchase(@PathVariable(name="id") final Long id) {
+      try {
+         purchaseRepository.deleteById(id);
+      } catch (Exception e) {
+         throw new ControllerConflictException("Something bad happened");
+      }
    }
 
    @ResponseStatus(HttpStatus.NOT_FOUND)

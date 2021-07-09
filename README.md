@@ -26,3 +26,5 @@
 * List all purchases: `GET /api/purchases`
 * Get purchase by id: `GET /api/purchases/{id}`
 * Create purchase: `POST /api/purchases`
+* Update purchase at a given id: `PUT /api/trips/{id}`
+* Delete purchase at a given id: `DELETE /api/trips/{id}`
