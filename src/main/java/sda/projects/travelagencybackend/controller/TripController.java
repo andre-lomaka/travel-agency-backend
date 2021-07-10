@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @RestController
 @RequestMapping("/api/trips")
 public class TripController {
@@ -69,6 +71,7 @@ public class TripController {
    @PostMapping
    public ResponseEntity<Trip> createTrip(@RequestBody final Trip trip) {
       trip.setId(null);
+      if (!validateDates(trip)) throw new ControllerConflictException("Invalid dates");
       Trip t = tripRepository.save(trip);
       return ResponseEntity.created(URI.create(String.format("/api/trips/%s", t.getId()))).body(t);
    }
@@ -77,5 +80,15 @@ public class TripController {
    @ExceptionHandler(ControllerNotFoundException.class)
    public ControllerError handleSpecificControllerException(final ControllerNotFoundException exception) {
       return new ControllerError(exception.getMessage());
+   }
+
+   @ResponseStatus(HttpStatus.CONFLICT)
+   @ExceptionHandler(ControllerConflictException.class)
+   public ControllerError handleSpecificControllerException(final ControllerConflictException exception) {
+      return new ControllerError(exception.getMessage());
+   }
+
+   private boolean validateDates(Trip trip) {
+      return DAYS.between(trip.getDepartureDate(), trip.getReturnDate()) > 0;
    }
 }
