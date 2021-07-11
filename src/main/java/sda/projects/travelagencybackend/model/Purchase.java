@@ -28,7 +28,7 @@ public class Purchase {
    private BigDecimal price;
 
    @Column(nullable=false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-   @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+   @JsonFormat(shape=JsonFormat.Shape.STRING)
    private LocalDateTime createdAt;
 
    @ManyToOne

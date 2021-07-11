@@ -21,11 +21,11 @@ public class Trip {
    private Long id;
 
    @Column(nullable=false)
-   @JsonFormat(pattern="yyyy-MM-dd")
+   @JsonFormat(shape=JsonFormat.Shape.STRING)
    private LocalDate departureDate;
 
    @Column(nullable=false)
-   @JsonFormat(pattern="yyyy-MM-dd")
+   @JsonFormat(shape=JsonFormat.Shape.STRING)
    private LocalDate returnDate;
 
    @Column(nullable=false)
