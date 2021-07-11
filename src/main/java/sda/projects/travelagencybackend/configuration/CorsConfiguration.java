@@ -1,4 +1,4 @@
-package sda.projects.travelagencybackend.controller;
+package sda.projects.travelagencybackend.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -11,6 +11,6 @@ public class CorsConfiguration implements WebMvcConfigurer {
    @Override
    public void addCorsMappings(CorsRegistry registry) {
       registry.addMapping("/**")
-              .allowedMethods("GET", "POST", "PUT", "DELETE");
+              .allowedMethods("GET", "POST", "PUT");
    }
 }
