@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/countries")
+@CrossOrigin(origins = "http://localhost:8080")
 public class CountryController {
    private final CountryRepository countryRepository;
 

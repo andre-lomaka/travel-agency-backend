@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/purchases")
+@CrossOrigin(origins = "http://localhost:8080")
 public class PurchaseController {
    private final PurchaseRepository purchaseRepository;
    private final TripRepository tripRepository;
