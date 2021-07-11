@@ -9,7 +9,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/cities")
-@CrossOrigin(origins = "http://localhost:4200")
 public class CityController {
    private final CityRepository cityRepository;
 

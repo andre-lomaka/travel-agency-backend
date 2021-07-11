@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/continents")
-@CrossOrigin(origins = "http://localhost:4200")
 public class ContinentController {
    private final ContinentRepository continentRepository;
 
