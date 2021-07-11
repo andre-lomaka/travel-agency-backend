@@ -18,10 +18,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       hs.authorizeRequests().
            antMatchers(HttpMethod.POST, "/api/trips/**").hasRole("ADMIN").
            antMatchers(HttpMethod.DELETE, "/api/trips/**").hasRole("ADMIN").
-//           antMatchers(HttpMethod.GET, "/api/trips/**").hasRole("ADMIN").
+           antMatchers(HttpMethod.GET, "/api/trips/**").hasRole("ADMIN").
            anyRequest().permitAll().
-           and().httpBasic().
-//           and().formLogin().
+           and().formLogin().
            and().logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)).
            and().csrf().disable();
    }
