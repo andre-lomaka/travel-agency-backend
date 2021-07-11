@@ -17,7 +17,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 @RestController
 @RequestMapping("/api/trips")
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TripController {
    private final TripRepository tripRepository;
 
