@@ -1,5 +1,6 @@
 package sda.projects.travelagencybackend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,9 +21,11 @@ public class Trip {
    private Long id;
 
    @Column(nullable=false)
+   @JsonFormat(shape=JsonFormat.Shape.STRING)
    private LocalDate departureDate;
 
    @Column(nullable=false)
+   @JsonFormat(shape=JsonFormat.Shape.STRING)
    private LocalDate returnDate;
 
    @Column(nullable=false)
