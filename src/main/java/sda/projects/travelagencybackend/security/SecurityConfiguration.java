@@ -1,5 +1,6 @@
 package sda.projects.travelagencybackend.security;
 
+import com.okta.spring.boot.oauth.Okta;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-   private static final String password = "{bcrypt}$2y$12$fqITdfOgS2Z3QnL781Yf9OcmlPi3O5TwVAUnGqS2EDYiXI6zDsxyu";
+/*   private static final String password = "{bcrypt}$2y$12$fqITdfOgS2Z3QnL781Yf9OcmlPi3O5TwVAUnGqS2EDYiXI6zDsxyu";
 
    @Override
    protected void configure(final HttpSecurity hs) throws Exception {
@@ -28,5 +29,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
    @Override
    protected void configure(final AuthenticationManagerBuilder amb) throws Exception {
       amb.inMemoryAuthentication().withUser("admin").password(password).roles("ADMIN");
+   }*/
+
+   @Override
+   protected void configure(HttpSecurity hs) throws Exception {
+      hs.authorizeRequests()
+              .antMatchers("/api/trips/**")
+              .authenticated()
+              .and()
+              .oauth2ResourceServer()
+              .jwt();
+
+      hs.cors();
+      Okta.configureResourceServer401ResponseBody(hs);
+      hs.csrf().disable();
    }
 }
