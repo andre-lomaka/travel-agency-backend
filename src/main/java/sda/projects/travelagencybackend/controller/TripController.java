@@ -5,8 +5,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sda.projects.travelagencybackend.model.Trip;
-import sda.projects.travelagencybackend.repository.TripRepository;
+import sda.projects.travelagencybackend.model.*;
+import sda.projects.travelagencybackend.repository.*;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -19,10 +19,22 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @RequestMapping("/api/trips")
 public class TripController {
    private final TripRepository tripRepository;
+   private final BoardBasisTypeRepository boardBasisTypeRepository;
+   private final CityRepository cityRepository;
+   private final AirportRepository airportRepository;
+   private final HotelRepository hotelRepository;
 
    @Autowired
-   public TripController(TripRepository tripRepository) {
+   public TripController(TripRepository tripRepository,
+                         BoardBasisTypeRepository boardBasisTypeRepository,
+                         CityRepository cityRepository,
+                         AirportRepository airportRepository,
+                         HotelRepository hotelRepository) {
       this.tripRepository = tripRepository;
+      this.boardBasisTypeRepository = boardBasisTypeRepository;
+      this.cityRepository = cityRepository;
+      this.airportRepository = airportRepository;
+      this.hotelRepository = hotelRepository;
    }
 
    @GetMapping("/promoted")
@@ -74,6 +86,33 @@ public class TripController {
       if (!validateDates(trip)) throw new ControllerConflictException("Invalid dates");
       Trip t = tripRepository.save(trip);
       return ResponseEntity.created(URI.create(String.format("/api/trips/%s", t.getId()))).body(t);
+   }
+
+   @PutMapping("/{id}")
+   public ResponseEntity<Trip> updateTrip(@RequestBody final Trip trip, @PathVariable(name="id") final Long id) {
+      Trip t = tripRepository.findById(id).orElseThrow(() -> new ControllerNotFoundException("Trip not found"));
+      BoardBasisType bbt = boardBasisTypeRepository.getById(trip.getBoardBasisType().getId());
+      City fc = cityRepository.getById(trip.getFromCity().getId());
+      Airport fa = airportRepository.getById(trip.getFromAirport().getId());
+      City tc = cityRepository.getById(trip.getToCity().getId());
+      Airport ta = airportRepository.getById(trip.getToAirport().getId());
+      Hotel h = hotelRepository.getById(trip.getToHotel().getId());
+      t.setVacancies(trip.getVacancies());
+      t.setDepartureDate(trip.getDepartureDate());
+      t.setReturnDate(trip.getReturnDate());
+      t.setAdultPrice(trip.getAdultPrice());
+      t.setChildPrice(trip.getChildPrice());
+      t.setNumberOfAdultBeds(trip.getNumberOfAdultBeds());
+      t.setNumberOfChildBeds(trip.getNumberOfChildBeds());
+      t.setPromoted(trip.getPromoted());
+      t.setBoardBasisType(bbt);
+      t.setFromCity(fc);
+      t.setFromAirport(fa);
+      t.setToCity(tc);
+      t.setToAirport(ta);
+      t.setToHotel(h);
+      tripRepository.save(t);
+      return ResponseEntity.noContent().build();
    }
 
    @ResponseStatus(HttpStatus.NOT_FOUND)

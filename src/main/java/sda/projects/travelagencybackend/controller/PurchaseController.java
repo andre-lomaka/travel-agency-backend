@@ -93,11 +93,11 @@ public class PurchaseController {
    }
 
    private boolean validatePersons(Purchase purchase, Trip trip) {
-       return purchase.getNumberOfAdults() <= trip.getNumberOfAdultBeds() &&
-               purchase.getNumberOfChildren() <= trip.getNumberOfChildBeds();
+      return purchase.getNumberOfAdults() <= trip.getNumberOfAdultBeds() &&
+              purchase.getNumberOfChildren() <= trip.getNumberOfChildBeds();
    }
 
    private boolean validateAvailability(Trip trip) {
-       return trip.getVacancies() > 0;
+      return trip.getVacancies() > 0;
    }
 }

@@ -1,7 +1,7 @@
 package sda.projects.travelagencybackend.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+//@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class Trip {
    @Id
    @GeneratedValue
@@ -35,7 +35,7 @@ public class Trip {
    private BigDecimal childPrice;
 
    @Column(nullable=false)
-   private boolean promoted;
+   private Boolean promoted;
 
    @Column(nullable=false)
    private Integer numberOfAdultBeds;

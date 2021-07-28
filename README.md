@@ -16,6 +16,7 @@
   * `departureDate`: departure date (yyyy-mm-dd)
   * `returnDate`: return date (yyyy-mm-dd)
 * Create trip: `POST /api/trips`
+* Update trip at a given id: `PUT /api/trips/{id}`
 * List all continents: `GET /api/continents`
 * Get continent by id: `GET /api/continents/{id}`
 * List all cities: `GET /api/cities`
