@@ -83,6 +83,12 @@ public class TripController {
    @PostMapping
    public ResponseEntity<Trip> createTrip(@RequestBody final Trip trip) {
       trip.setId(null);
+      boardBasisTypeRepository.findById(trip.getBoardBasisType().getId()).orElseThrow(() -> new ControllerNotFoundException("BBT not found"));
+      cityRepository.findById(trip.getFromCity().getId()).orElseThrow(() -> new ControllerNotFoundException("fromCity not found"));
+      airportRepository.findById(trip.getFromAirport().getId()).orElseThrow(() -> new ControllerNotFoundException("fromAirport not found"));
+      cityRepository.findById(trip.getToCity().getId()).orElseThrow(() -> new ControllerNotFoundException("toCity not found"));
+      airportRepository.findById(trip.getToAirport().getId()).orElseThrow(() -> new ControllerNotFoundException("toAirport not found"));
+      hotelRepository.findById(trip.getToHotel().getId()).orElseThrow(() -> new ControllerNotFoundException("Hotel not found"));
       if (!validateDates(trip)) throw new ControllerConflictException("Invalid dates");
       Trip t = tripRepository.save(trip);
       return ResponseEntity.created(URI.create(String.format("/api/trips/%s", t.getId()))).body(t);
@@ -91,12 +97,12 @@ public class TripController {
    @PutMapping("/{id}")
    public ResponseEntity<Trip> updateTrip(@RequestBody final Trip trip, @PathVariable(name="id") final Long id) {
       Trip t = tripRepository.findById(id).orElseThrow(() -> new ControllerNotFoundException("Trip not found"));
-      BoardBasisType bbt = boardBasisTypeRepository.getById(trip.getBoardBasisType().getId());
-      City fc = cityRepository.getById(trip.getFromCity().getId());
-      Airport fa = airportRepository.getById(trip.getFromAirport().getId());
-      City tc = cityRepository.getById(trip.getToCity().getId());
-      Airport ta = airportRepository.getById(trip.getToAirport().getId());
-      Hotel h = hotelRepository.getById(trip.getToHotel().getId());
+      BoardBasisType bbt = boardBasisTypeRepository.findById(trip.getBoardBasisType().getId()).orElseThrow(() -> new ControllerNotFoundException("BBT not found"));
+      City fc = cityRepository.findById(trip.getFromCity().getId()).orElseThrow(() -> new ControllerNotFoundException("fromCity not found"));
+      Airport fa = airportRepository.findById(trip.getFromAirport().getId()).orElseThrow(() -> new ControllerNotFoundException("fromAirport not found"));
+      City tc = cityRepository.findById(trip.getToCity().getId()).orElseThrow(() -> new ControllerNotFoundException("toCity not found"));
+      Airport ta = airportRepository.findById(trip.getToAirport().getId()).orElseThrow(() -> new ControllerNotFoundException("toAirport not found"));
+      Hotel h = hotelRepository.findById(trip.getToHotel().getId()).orElseThrow(() -> new ControllerNotFoundException("Hotel not found"));
       t.setVacancies(trip.getVacancies());
       t.setDepartureDate(trip.getDepartureDate());
       t.setReturnDate(trip.getReturnDate());
